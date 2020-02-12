@@ -55,7 +55,7 @@ public class Client {
  
             oos.writeObject(getName());
 
-            myUI = new GUI(ois);
+            myUI = new GUI();
 
             myUI.showGUI();
 
@@ -75,14 +75,9 @@ public class Client {
             e.printStackTrace();
             disconnect();
         }
-
-        myUI.updateHand(myHand);
-        //clearScreen();
-
         
+        myUI.updateHand(myHand);
 
-        System.out.println("NEW HAND!");
-        System.out.println(myHand + " Draw/Stick?");
     }
 
 
@@ -91,9 +86,6 @@ public class Client {
         try {
             oos.writeObject("draw");
             myHand.addToHand((Card) ois.readObject());
-
-            System.out.println("hey");
-
             myUI.updateHand(myHand);
 
         } catch (Exception e) {
@@ -108,9 +100,6 @@ public class Client {
             System.out.println(myHand + " Total: " + myHand.countHand());
 
             myUI.printResults((String) ois.readObject());
-
-            // Print result
-            //System.out.println(ois.readObject());
             setupHand();
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,20 +109,9 @@ public class Client {
 
 
     public static void main(String[] Ari) { 
-        /*
-        Thread liveHand = new Thread(new Runnable(){
-        
-            @Override
-            public void run() {
-                setupHand();
-
-            }
-        });
-        */
+ 
         setup();
         setupHand();
-
-        while(true) {}
 
     }
 

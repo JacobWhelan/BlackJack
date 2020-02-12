@@ -1,6 +1,9 @@
+import javax.imageio.ImageIO;
 import java.io.Serializable;
 
-public class Card implements Serializable{
+import java.awt.image.*;
+
+public class Card implements Serializable {
 
     static final long serialVersionUID = 1L;
 
@@ -8,11 +11,29 @@ public class Card implements Serializable{
 
     private int suit;
 
-    
+    private int ID;
 
-    public Card(int value, int suit) {
-        this.value = value;
-        this.suit = suit;
+    public BufferedImage getImage() {
+        BufferedImage img;
+
+        try {
+            img = ImageIO.read(this.getClass().getResourceAsStream("/png/" + this.toString() + ".png"));
+        } catch(Exception e) {
+            e.printStackTrace();
+            img = null;
+        }
+
+        return img;
+    }
+
+    public Card(int id) {
+        this.ID = id;
+        this.suit = (id/13) + 1;
+        this.value = (id%13) + 1;
+    }
+
+    public int getID() {
+        return ID;
     }
 
     public int cardValue() {

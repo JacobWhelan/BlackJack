@@ -14,11 +14,8 @@ public class Deck {
     }
 
     public void setDeck() {
-        for(int i=1;i<5;i++) {
-            for(int j=1;j<14;j++) {
-                Card toAdd = new Card(j, i);
-                deck.add(toAdd);
-            }
+        for(int i=0; i<52; i++) {
+            deck.add(new Card(i));
         }
     }
 
@@ -33,4 +30,5 @@ public class Deck {
         Collections.shuffle(deck);
         
     }
+
 }

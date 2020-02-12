@@ -73,8 +73,6 @@ public static Vector<ClientHandler> getClientHandlers() {
             }
 
         }
-
-        
         
     }
 

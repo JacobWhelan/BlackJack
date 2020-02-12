@@ -1,53 +1,65 @@
 import javax.swing.*;
 import java.awt.Font;
 import java.awt.event.*;
-import java.io.ObjectInputStream;
+
+import java.awt.BorderLayout;
+import java.awt.Image;
+import java.awt.image.*;
 
 public class GUI extends JFrame implements ActionListener {
 
     private static final long serialVersionUID = 1L;
     
     private Font buttonFont = new Font(Font.MONOSPACED,  Font.BOLD, 25);
-
-    public static DefaultListModel<Card> model;
     
     public static JTextField results;
 
-    private ObjectInputStream ois;
+    private static JPanel p = new JPanel();
 
-    public GUI(ObjectInputStream ois) {
-        this.ois = ois;
+    public GUI() {
 
         JButton draw = new JButton("DRAW");
-              draw.setBounds(0, 0, 200, 200);
-              draw.setFont(buttonFont);
-              draw.addActionListener(this);
+            draw.setBounds(0, 0, 200, 200);
+            draw.setFont(buttonFont);
+            draw.addActionListener(this);
 
         JButton stick = new JButton("STICK");
             stick.setBounds(200, 0, 200, 200);
             stick.setFont(buttonFont);
             stick.addActionListener(this);
 
-
+        
         // results tab
         results = new JTextField();
-        results.setBounds(50, 200, 250, 100);
-        results.setFont(new Font(Font.MONOSPACED,  Font.PLAIN, 15));
+        results.setBounds(0, 200, 400, 80);
+        results.setFont(new Font(Font.MONOSPACED,  Font.PLAIN, 20));
         
-        // make the card list
-        JPanel handView = new JPanel();
-        model = new DefaultListModel<>();
-        JList<Card> handList = new JList<Card>(model);
+        p.add(new JTextArea());
+        p.setBounds(400, 0, 600, 350);
 
-        handView.add(handList);
-        handView.setBounds(500, 0, 100, 100);
-
-
+       
         // add everything
         add(results);
         add(draw);
         add(stick);
-        add(handView);
+        add(p);
+
+    }
+
+    public void updateHand(Hand h) {
+        BufferedImage img;
+        JLabel j;
+
+        p.removeAll();
+
+        for(Card card : h.getHand()){
+            img = card.getImage();
+            j = new JLabel(new ImageIcon(img.getScaledInstance(100, 150, Image.SCALE_DEFAULT)));
+            p.add(j);
+        }
+
+        repaint();
+        revalidate();
 
     }
 
@@ -63,15 +75,6 @@ public class GUI extends JFrame implements ActionListener {
         revalidate();
     }
 
-    public void updateHand(Hand hand) {
-        model.clear();
-        for(Card card : hand.getHand())
-            model.addElement(card);
-
-        revalidate();
-    }
-
-    
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -79,7 +82,7 @@ public class GUI extends JFrame implements ActionListener {
 
         if(request.equals("DRAW")) {
             Client.drawCard();
-            System.out.println("hi");
+            
         }
         else if(request.equals("STICK"))
             Client.endHand();
